@@ -5,13 +5,18 @@ from string import ascii_uppercase
 import string
 
 class Cypher():
-    def __init__(self, shift:int, alphabet:str):
+    def __init__(self, shift:int, alphabet:str, key:Optional[list[str]]):
         self.shift =shift
         self.alphabet = alphabet
-    
-    def generatekey(self)->None:
-        pass
+        self.key = key
 
+    def generatekey(self)->None:
+
+        for _ in range(len(self.alphabet)):
+            self.key.append(choice(self.alphabet))
+        
+        self.key = ''.join(self.key)
+        print(self.key)
     def encrypt(self,passinword)-> None:
         self.passiword = passinword
         self.position = 0
@@ -38,6 +43,7 @@ class Cypher():
             print(chr(self.original))
         
         print(self.stored)
-running = Cypher(25,string.ascii_letters )
-running.encrypt('ola mundo ola mundo ola mundo ola mundo ola mundo')
-running.decrypt()
+running = Cypher(25,string.ascii_letters,list())
+running.generatekey()
+#running.encrypt('ola mundo ola mundo ola mundo ola mundo ola mundo')
+#running.decrypt()
