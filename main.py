@@ -5,11 +5,12 @@ from string import ascii_uppercase
 import string
 
 class Cypher():
-    def __init__(self, shift:int, alphabet:str, key:Optional[list[str]]):
+    def __init__(self, shift:int, alphabet:str, key:Optional[list[str]], 
+                 mod:int):
         self.shift =shift
         self.alphabet = alphabet
         self.key = key
-
+        self.mod = mod
     def generatekey(self)->None:
 
         for _ in range(len(self.alphabet)):
@@ -17,6 +18,7 @@ class Cypher():
         
         self.key = ''.join(self.key)
         print(self.key)
+
     def encrypt(self,passinword)-> None:
         self.passiword = passinword
         self.position = 0
@@ -25,7 +27,7 @@ class Cypher():
 
         for a in range(len(self.passiword)):
             self.passiword = (lambda passinword: ord(passinword[a]) -ord(passinword[a]))(passinword)
-            self.position = (lambda position:(self.passiword+ 25)%26)(self.position)
+            self.position = (lambda position:(self.passiword+ self.shift)%self.mod)(self.position)
             self.newpos = (lambda postition: chr(self.position+ ord(passinword[a])))(self.position)
             
             self.stored.append(self.newpos)
@@ -38,12 +40,12 @@ class Cypher():
 
         for b in range(len(self.stored)):
             self.aftercypher = (lambda normalize: (ord(self.stored[b]) - ord(self.sotred_strings[b])))(self.aftercypher)
-            self.originalposition= (lambda convertpositionback: (self.aftercypher - self.shift) %26)(self.originalposition)
+            self.originalposition= (lambda convertpositionback: (self.aftercypher - self.shift) %self.mod)(self.originalposition)
             self.original = (lambda strings: (self.originalposition + ord(self.sotred_strings[b])))(self.original)
             print(chr(self.original))
         
         print(self.stored)
-running = Cypher(25,string.ascii_letters,list())
-running.generatekey()
-#running.encrypt('ola mundo ola mundo ola mundo ola mundo ola mundo')
-#running.decrypt()
+running = Cypher(3,string.ascii_letters,list(),26)
+#running.generatekey()
+running.encrypt('ola mundo ola mundo ola mundo ola mundo ola mundo')
+running.decrypt()
