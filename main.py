@@ -1,22 +1,19 @@
 from typing import Optional
 from random import randint
-from random import choice
+import secrets
 from string import ascii_uppercase
 import string
 
 class Cypher():
-    def __init__(self, shift:int, alphabet:str, key:Optional[list[str]], 
+    def __init__(self, shift:int, alphabet:str, key:Optional[int], 
                  mod:int):
         self.shift =shift
         self.alphabet = alphabet
         self.key = key
         self.mod = mod
+    
     def generatekey(self)->None:
-
-        for _ in range(len(self.alphabet)):
-            self.key.append(choice(self.alphabet))
-        
-        self.key = ''.join(self.key)
+        self.key = (lambda x: secrets.token_hex(32))(self.key)
         print(self.key)
 
     def encrypt(self,passinword)-> None:
@@ -26,6 +23,7 @@ class Cypher():
         self.sotred_strings = list()
 
         for a in range(len(self.passiword)):
+            
             self.passiword = (lambda passinword: ord(passinword[a]) -ord(passinword[a]))(passinword)
             self.position = (lambda position:(self.passiword+ self.shift)%self.mod)(self.position)
             self.newpos = (lambda postition: chr(self.position+ ord(passinword[a])))(self.position)
@@ -45,7 +43,7 @@ class Cypher():
             print(chr(self.original))
         
         print(self.stored)
-running = Cypher(3,string.ascii_letters,list(),26)
-#running.generatekey()
-running.encrypt('ola mundo ola mundo ola mundo ola mundo ola mundo')
-running.decrypt()
+running = Cypher(3,string.ascii_letters,0,26)
+running.generatekey()
+#running.encrypt(b'ola mundo ola mundo ola mundo ola mundo ola mundo')
+#running.decrypt()
