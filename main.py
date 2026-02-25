@@ -5,7 +5,7 @@ from string import ascii_uppercase
 import string
 
 class Cypher():
-    def __init__(self, shift:int, alphabet:str, key:Optional[int], 
+    def __init__(self, shift:list, alphabet:str, key:Optional[list[str]], 
                  mod:int):
         self.shift =shift
         self.alphabet = alphabet
@@ -13,24 +13,25 @@ class Cypher():
         self.mod = mod
     
     def generatekey(self)->None:
-        self.key = (lambda x: secrets.token_hex(32))(self.key)
-        print(self.key)
+        self.key = (lambda x: secrets.token_bytes(32))(self.key)
+
+        for bytes_number in range(len(self.key)):
+            self.shift.append(self.key[bytes_number])
+        print(self.shift)
 
     def encrypt(self,passinword)-> None:
         self.passiword = passinword
         self.position = 0
         self.stored = list()
-        self.sotred_strings = list()
+        #self.sotred_strings = list()
 
-        for a in range(len(self.passiword)):
+        for a in range(len(self.shift)):
+
+            self.position = (lambda position:(self.passiword[a]+ self.shift[a])%self.mod)(self.position)
+            self.stored.append(self.position)
             
-            self.passiword = (lambda passinword: ord(passinword[a]) -ord(passinword[a]))(passinword)
-            self.position = (lambda position:(self.passiword+ self.shift)%self.mod)(self.position)
-            self.newpos = (lambda postition: chr(self.position+ ord(passinword[a])))(self.position)
-            
-            self.stored.append(self.newpos)
-            self.sotred_strings.append(passinword[a])
-        
+        print(self.key.hex())
+
     def decrypt(self)->None:
         self.aftercypher = 0
         self.originalposition = 0
@@ -43,7 +44,7 @@ class Cypher():
             print(chr(self.original))
         
         print(self.stored)
-running = Cypher(3,string.ascii_letters,0,26)
+running = Cypher(list(),string.ascii_letters,list(),256)
 running.generatekey()
-#running.encrypt(b'ola mundo ola mundo ola mundo ola mundo ola mundo')
+running.encrypt(b'ola mundo ola mundo ola mundo ola mundo ola mundo')
 #running.decrypt()
