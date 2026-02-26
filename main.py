@@ -17,7 +17,7 @@ class Cypher():
 
         for bytes_number in range(len(self.key)):
             self.shift.append(self.key[bytes_number])
-        print(self.shift)
+        #print(self.shift)
 
     def encrypt(self,passinword)-> None:
         self.passiword = passinword
@@ -29,22 +29,24 @@ class Cypher():
 
             self.position = (lambda position:(self.passiword[a]+ self.shift[a])%self.mod)(self.position)
             self.stored.append(self.position)
-            
         print(self.key.hex())
+        print(self.stored)
 
     def decrypt(self)->None:
-        self.aftercypher = 0
+        self.aftercypher  =list()
         self.originalposition = 0
         self.original = 0
 
-        for b in range(len(self.stored)):
-            self.aftercypher = (lambda normalize: (ord(self.stored[b]) - ord(self.sotred_strings[b])))(self.aftercypher)
-            self.originalposition= (lambda convertpositionback: (self.aftercypher - self.shift) %self.mod)(self.originalposition)
-            self.original = (lambda strings: (self.originalposition + ord(self.sotred_strings[b])))(self.original)
-            print(chr(self.original))
+        for b in range(len(self.shift)):
+            #self.aftercypher = (lambda normalize: (ord(self.stored[b]) - ord(self.sotred_strings[b])))(self.aftercypher)
+            self.originalposition= (lambda convertpositionback: (self.stored[b] - self.shift[b]) %self.mod)(self.originalposition)
+            #self.original = (lambda strings: (self.originalposition + ord(self.sotred_strings[b])))(self.original)
+            self.aftercypher.append(self.originalposition)
+        print(self.aftercypher)
+        print(bytes(self.aftercypher))
         
-        print(self.stored)
+        #print(self.stored)
 running = Cypher(list(),string.ascii_letters,list(),256)
 running.generatekey()
 running.encrypt(b'ola mundo ola mundo ola mundo ola mundo ola mundo')
-#running.decrypt()
+running.decrypt()
