@@ -23,11 +23,15 @@ class Cypher():
         self.position = 0
         self.stored_key = list()
         encrypted= 0
-        
-        for a in range(len(self.shift)):
+        self.counter_chunks =0
 
-            self.position = (lambda position:(self.passiword[a]+ self.shift[a])%self.mod)(self.position)
-            self.stored_key.append(self.position)
+        for a in range(len(self.passiword)):
+                self.position = (lambda position:(self.passiword[a]+ self.shift[self.counter_chunks])%self.mod)(self.position)
+                self.stored_key.append(self.position)
+
+                self.counter_chunks+=1
+                self.shift[self.counter_chunks]
+                self.generatekey()
 
         encrypted= bytes(self.stored_key)
         encrypted= encrypted.hex()
@@ -37,14 +41,18 @@ class Cypher():
         self.aftercypher  =list()
         self.originalposition = 0
         self.original = 0
+        self.counter_chunks = len(self.passiword)
 
-        for b in range(len(self.shift)):
-            self.originalposition= (lambda convertpositionback: (self.stored_key[b] - self.shift[b]) %self.mod)(self.originalposition)
-            self.aftercypher.append(self.originalposition)
+        for b in range(len(self.passiword)):
+                self.originalposition= (lambda convertpositionback: (self.stored_key[b] - self.shift[b]) %self.mod)(self.originalposition)
+                self.aftercypher.append(self.originalposition)
+            
+                self.counter_chunks-=1
 
-        print(bytes(self.aftercypher))
+        a = bytes(self.aftercypher)
+        print(f"\n \n {a}")
 
 running = Cypher(list(),string.ascii_letters,list(),256)
 running.generatekey()
-running.encrypt(b'ola mundo ola mundo ola mundo ola mundo ola mundo')
+running.encrypt(b'ola mundo ola mundo ola mundo ola mundo ola mundo ola mundo ola mundo ola mundo ola mundo ola mundo maravilha')
 running.decrypt()
